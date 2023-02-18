@@ -1,0 +1,24 @@
+<div *ngIf="products$ | async as products">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Serial Number</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products.products">
+          <td>{{ product.name }}</td>
+          <td>{{ product.serial_number }}</td>
+          <td>{{ product.price | number: '1.2-2' }}</td>
+          <td>
+            <button (click)="updateProduct(product)">Edit</button>
+            <button (click)="deleteProduct(product.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
