@@ -12,6 +12,17 @@ import { EffectsModule } from '@ngrx/effects';
 import { ProductEffects } from './features/product/store/effects/products.effects';
 
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule} from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatTableModule} from '@angular/material/table';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +33,18 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     StoreModule.forRoot({ products: productReducer }),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
-    EffectsModule.forRoot([ProductEffects])
+    EffectsModule.forRoot([ProductEffects]),
+    ReactiveFormsModule,
+    FormsModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatCardModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatTableModule,
+    BrowserAnimationsModule,
+    MatInputModule
   ],
   providers: [
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase }

@@ -1,24 +1,66 @@
-<div *ngIf="products$ | async as products">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Serial Number</th>
-          <th>Price</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of products.products">
-          <td>{{ product.name }}</td>
-          <td>{{ product.serial_number }}</td>
-          <td>{{ product.price | number: '1.2-2' }}</td>
-          <td>
-            <button (click)="updateProduct(product)">Edit</button>
-            <button (click)="deleteProduct(product.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Lista de Productos</mat-card-title>
+    <button mat-raised-button color="primary" (click)="addProduct()">Añadir Producto</button>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+        <mat-cell *matCellDef="let product">{{ product.name }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="serial_number">
+        <mat-header-cell *matHeaderCellDef>Número de Serie</mat-header-cell>
+        <mat-cell *matCellDef="let product">{{ product.serial_number }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef>Precio</mat-header-cell>
+        <mat-cell *matCellDef="let product">{{ product.price | currency }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+        <mat-cell *matCellDef="let product">
+          <button mat-icon-button color="primary" (click)="updateProduct(product)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteProduct(product)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="['name', 'serial_number', 'price', 'actions']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['name', 'serial_number', 'price', 'actions']"></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>
 
+<!-- Diálogo de Edición / Adición -->
+<ng-template #dialogTemplate let-dialogRef>
+  <h2 mat-dialog-title>{{ isNew ? 'Añadir Producto' : 'Editar Producto' }}</h2>
+  <mat-dialog-content>
+    <form [formGroup]="productForm">
+      <mat-form-field>
+        <input matInput formControlName="name" placeholder="Nombre">
+        <mat-error *ngIf="productForm.controls['name'].invalid">
+          El nombre es requerido y debe ser único y tener máximo 20 caracteres.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="serial_number" placeholder="Número de Serie">
+        <mat-error *ngIf="productForm.controls['serial_number'].invalid">
+          El número de serie es requerido y debe tener exactamente 8 caracteres.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="price" placeholder="Precio" type="number">
+        <mat-error *ngIf="productForm.controls['price'].invalid">
+          El precio es requerido y debe estar entre 100 y 500.
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button color="primary" (click)="saveProduct()">Guardar</button>
+  </mat-dialog-actions>
+</ng-template>
