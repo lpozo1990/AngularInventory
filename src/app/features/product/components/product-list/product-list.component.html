@@ -42,7 +42,9 @@
       <mat-form-field>
         <input matInput formControlName="name" placeholder="Nombre">
         <mat-error *ngIf="productForm.controls['name'].invalid">
-          El nombre es requerido y debe ser único y tener máximo 20 caracteres.
+          El nombre es requerido ,debe ser único, máximo 20 caracteres, solo debe permitir letras y
+          espacios.
+          
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -64,3 +66,17 @@
     <button mat-button color="primary" (click)="saveProduct()">Guardar</button>
   </mat-dialog-actions>
 </ng-template>
+
+
+<ng-template #dialogDeleteTemplate let-dialogRef let-data>
+<h2 mat-dialog-title>Confirmar eliminación</h2>
+<mat-dialog-content>
+  <p>¿Está seguro que desea eliminar el producto <strong>{{data.product.name}}</strong>?</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button color="warn" [mat-dialog-close]="true">Eliminar</button>
+</mat-dialog-actions>
+</ng-template>
+
+
